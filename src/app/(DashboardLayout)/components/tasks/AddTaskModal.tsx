@@ -74,7 +74,6 @@ const AddTaskModal: React.FC<AddTaskModalProps> = ({ open, onClose }) => {
             onChange={(e) => setStatus(e.target.value as TaskStatusEnum)}
           >
             <MenuItem value={TaskStatusEnum.PENDING}>Pending</MenuItem>
-            <MenuItem value={TaskStatusEnum.IN_PROGRESS}>In Progress</MenuItem>
             <MenuItem value={TaskStatusEnum.COMPLETED}>Completed</MenuItem>
           </Select>
         </FormControl>

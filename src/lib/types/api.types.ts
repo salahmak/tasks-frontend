@@ -48,8 +48,6 @@ export interface TaskBase {
 export enum TaskStatusEnum {
   PENDING = "pending",
   COMPLETED = "completed",
-  IN_PROGRESS = "in_progress",
-  // Add other statuses as needed
 }
 
 export type TaskCreate = TaskBase;
@@ -84,7 +82,6 @@ export enum TaskActionEnum {
   UPDATED = "updated",
   DELETED = "deleted",
   COMPLETED = "completed",
-  // Add other actions as needed
 }
 
 export interface TaskStatisticsOverviewSchema {
