@@ -8,10 +8,11 @@ import {
   TaskUpdate,
   TaskStatisticsOverviewSchema,
 } from "@/lib/types/api.types";
+import { getApiEndpoint } from "@/lib/env";
 
 export const apiSlice = createApi({
   reducerPath: "api",
-  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:8000/api/v1" }),
+  baseQuery: fetchBaseQuery({ baseUrl: getApiEndpoint() }),
   tagTypes: ["Tasks", "Statistics"],
   endpoints: (builder) => ({
     getTasks: builder.query<APIResponse<TaskResponseSchema[]>, void>({
