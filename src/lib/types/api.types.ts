@@ -85,8 +85,8 @@ export enum TaskActionEnum {
 }
 
 export interface TaskStatisticsOverviewSchema {
-  totalTasks: number; // Total number of tasks
-  modifiedTasks: number; // Number of modified tasks
-  deletedTasks: number; // Number of deleted tasks
-  completedTasks: number; // Number of completed tasks
+  total_tasks: number; // Total number of tasks
+  modified_tasks: number; // Number of modified tasks
+  deleted_tasks: number; // Number of deleted tasks
+  completed_tasks: number; // Number of completed tasks
 }

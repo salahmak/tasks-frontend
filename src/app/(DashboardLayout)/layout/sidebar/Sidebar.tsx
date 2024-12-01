@@ -67,7 +67,6 @@ const Sidebar = ({
               {/* Sidebar Items */}
               {/* ------------------------------------------- */}
               <SidebarItems />
-              <Upgrade />
             </Box>
           </Box>
         </Drawer>

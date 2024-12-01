@@ -22,13 +22,13 @@ const Menuitems = [
     id: uniqueId(),
     title: "Tasks",
     icon: IconListCheck,
-    href: "/tasks",
+    href: "/",
   },
   {
     id: uniqueId(),
     title: "Statistics",
     icon: IconChartDonut,
-    href: "/",
+    href: "/statistics",
   },
 ];
 

@@ -6,12 +6,13 @@ import {
   TaskResponseSchema,
   TaskCreate,
   TaskUpdate,
+  TaskStatisticsOverviewSchema,
 } from "@/lib/types/api.types";
 
 export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:8000/api/v1" }),
-  tagTypes: ["Tasks"], // Add tag for cache invalidation
+  tagTypes: ["Tasks", "Statistics"],
   endpoints: (builder) => ({
     getTasks: builder.query<APIResponse<TaskResponseSchema[]>, void>({
       query: () => `/tasks`,
@@ -61,6 +62,14 @@ export const apiSlice = createApi({
       }),
       invalidatesTags: ["Tasks"],
     }),
+
+    getTaskStatistics: builder.query<
+      APIResponse<TaskStatisticsOverviewSchema>,
+      void
+    >({
+      query: () => `/statistics`,
+      providesTags: ["Statistics", "Tasks"], // Invalidate when tasks change
+    }),
   }),
 });
 
@@ -70,4 +79,5 @@ export const {
   useUpdateTaskMutation,
   useDeleteTaskMutation,
   useBulkUpdateTasksMutation,
+  useGetTaskStatisticsQuery,
 } = apiSlice;
