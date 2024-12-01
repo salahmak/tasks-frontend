@@ -1,11 +1,11 @@
 // Pagination Metadata
 export interface PaginationMetadata {
-  totalItems: number; // Total number of items
-  totalPages: number; // Total number of pages
-  currentPage: number; // Current page number
-  pageSize: number; // Number of items per page
-  hasNext: boolean; // Whether there are more pages
-  hasPrevious: boolean; // Whether there are previous pages
+  total_items: number; // Total number of items
+  total_pages: number; // Total number of pages
+  current_page: number; // Current page number
+  page_size: number; // Number of items per page
+  has_next: boolean; // Whether there are more pages
+  has_previous: boolean; // Whether there are previous pages
 }
 
 // Error Models
@@ -35,8 +35,8 @@ export interface TaskResponseSchema {
   title: string;
   description?: string;
   status: string;
-  createdAt: string; // ISO string for datetime
-  updatedAt?: string; // Optional ISO string for datetime
+  created_at: string; // ISO string for datetime
+  updated_at?: string; // Optional ISO string for datetime
 }
 
 export interface TaskBase {
@@ -55,24 +55,17 @@ export type TaskCreate = TaskBase;
 export interface TaskUpdate {
   title?: string; // Optional to allow partial updates
   description?: string; // Optional task description
-  isDeleted?: boolean; // Mark task as deleted
+  is_deleted?: boolean; // Mark task as deleted
   status?: TaskStatusEnum; // Update task status
 }
 
 export interface TasksBulkAction {
-  taskIds: number[]; // List of task IDs to be acted upon
-}
-
-export interface TaskSchema extends TaskBase {
-  id: number;
-  createdAt: string; // ISO string for datetime
-  updatedAt?: string; // Optional ISO string for datetime
-  isDeleted: boolean; // Default value is false
+  task_ids: number[]; // List of task IDs to be acted upon
 }
 
 export interface TaskStatisticSchema {
   id: number;
-  taskId: number;
+  task_id: number;
   action: TaskActionEnum;
   actionAt: string; // ISO string for datetime
 }

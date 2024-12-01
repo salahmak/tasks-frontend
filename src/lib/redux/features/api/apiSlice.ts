@@ -15,8 +15,34 @@ export const apiSlice = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: getApiEndpoint() }),
   tagTypes: ["Tasks", "Statistics"],
   endpoints: (builder) => ({
-    getTasks: builder.query<APIResponse<TaskResponseSchema[]>, void>({
-      query: () => `/tasks`,
+    getTasks: builder.query<
+      APIResponse<TaskResponseSchema[]>,
+      { page?: number; limit?: number }
+    >({
+      query: ({ page = 1, limit = 10 }) => `/tasks?page=${page}&limit=${limit}`,
+      // Merge incoming results with existing data for infinite scroll
+      serializeQueryArgs: ({ endpointName }) => {
+        return endpointName;
+      },
+      // Combine paginated results
+      merge: (currentCache, newItems) => {
+        // Ensure no duplicates
+        if (newItems.data) {
+          const existingIds = new Set(
+            currentCache.data?.map((task) => task.id) || [],
+          );
+          const uniqueNewItems = newItems.data.filter(
+            (task) => !existingIds.has(task.id),
+          );
+
+          currentCache.data = [...(currentCache.data || []), ...uniqueNewItems];
+          currentCache.pagination = newItems.pagination;
+        }
+      },
+      // Prevent refetching the same data
+      forceRefetch({ currentArg, previousArg }) {
+        return currentArg?.page !== previousArg?.page;
+      },
       providesTags: ["Tasks"],
     }),
 
