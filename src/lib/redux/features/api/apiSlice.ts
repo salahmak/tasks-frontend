@@ -46,13 +46,33 @@ export const apiSlice = createApi({
       providesTags: ["Tasks"],
     }),
 
+    getTask: builder.query<APIResponse<TaskResponseSchema>, number>({
+      query: (id) => `/tasks/${id}`,
+      providesTags: (result, error, id) => [{ type: "Tasks", id }],
+    }),
+
     addTask: builder.mutation<APIResponse<TaskResponseSchema>, TaskCreate>({
       query: (task) => ({
         url: "/tasks",
         method: "POST",
         body: task,
       }),
-      invalidatesTags: ["Tasks"],
+      async onQueryStarted(task, { dispatch, queryFulfilled }) {
+        try {
+          const { data: newTask } = await queryFulfilled;
+          dispatch(
+            apiSlice.util.updateQueryData(
+              "getTasks",
+              { page: 1, limit: 10 },
+              (draft) => {
+                if (draft.data) {
+                  draft.data.unshift(newTask.data);
+                }
+              },
+            ),
+          );
+        } catch {}
+      },
     }),
 
     updateTask: builder.mutation<
@@ -64,7 +84,25 @@ export const apiSlice = createApi({
         method: "PUT",
         body: task,
       }),
-      invalidatesTags: ["Tasks"],
+      async onQueryStarted({ id, task }, { dispatch, queryFulfilled }) {
+        try {
+          const { data: updatedTask } = await queryFulfilled;
+          dispatch(
+            apiSlice.util.updateQueryData(
+              "getTasks",
+              { page: 1, limit: 10 },
+              (draft) => {
+                if (draft.data) {
+                  const index = draft.data.findIndex((t) => t.id === id);
+                  if (index !== -1) {
+                    draft.data[index] = updatedTask.data;
+                  }
+                }
+              },
+            ),
+          );
+        } catch {}
+      },
     }),
 
     deleteTask: builder.mutation<APIResponse<void>, number>({
@@ -72,7 +110,24 @@ export const apiSlice = createApi({
         url: `/tasks/${id}`,
         method: "DELETE",
       }),
-      invalidatesTags: ["Tasks"],
+      async onQueryStarted(id, { dispatch, queryFulfilled }) {
+        const deleteResult = dispatch(
+          apiSlice.util.updateQueryData(
+            "getTasks",
+            { page: 1, limit: 10 },
+            (draft) => {
+              if (draft.data) {
+                draft.data = draft.data.filter((task) => task.id !== id);
+              }
+            },
+          ),
+        );
+        try {
+          await queryFulfilled;
+        } catch {
+          deleteResult.undo();
+        }
+      },
     }),
 
     bulkUpdateTasks: builder.mutation<
@@ -87,7 +142,28 @@ export const apiSlice = createApi({
         method: "PATCH",
         body: { task_ids: taskIds },
       }),
-      invalidatesTags: ["Tasks"],
+      async onQueryStarted({ action, taskIds }, { dispatch, queryFulfilled }) {
+        if (action === "delete") {
+          const deleteResult = dispatch(
+            apiSlice.util.updateQueryData(
+              "getTasks",
+              { page: 1, limit: 10 },
+              (draft) => {
+                if (draft.data) {
+                  draft.data = draft.data.filter(
+                    (task) => !taskIds.includes(task.id),
+                  );
+                }
+              },
+            ),
+          );
+          try {
+            await queryFulfilled;
+          } catch {
+            deleteResult.undo();
+          }
+        }
+      },
     }),
 
     getTaskStatistics: builder.query<
