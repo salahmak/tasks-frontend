@@ -1,34 +1,65 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Tasks Management Application (Frontend)
 
-## Getting Started
+## **Project Description**
 
-First, run the development server:
+This project is a **frontend for the TO-DO List application**, built using **Next.js** with Redux Toolkit and Redux Toolkit Query for state management and API interactions. It provides a user-friendly interface for managing tasks, including creating, updating, deleting, and viewing tasks. The app integrates seamlessly with the backend API to provide a responsive and efficient user experience.
 
+---
+
+## **Setup Instructions**
+
+### **1. Clone the Repository**
+Clone the frontend repository to your local machine:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
+git clone https://github.com/salahmak/tasks-frontend
+cd tasks-frontend
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### **2. Create a `.env` File**
+Create a `.env` file in the project root and define the backend API endpoint URL:
+```
+NEXT_PUBLIC_API_ENDPOINT_URL=http://localhost:8000/api/v1
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+> **Note**: Use the URL of the backend you configured earlier. For local development, the default value is `http://localhost:8000/api/v1`.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+### **3. Install Dependencies**
+Install the required dependencies using your preferred package manager:
+```bash
+# Using yarn
+yarn install
 
-## Learn More
+# OR using npm
+npm install
+```
 
-To learn more about Next.js, take a look at the following resources:
+### **4. Run the Development Server**
+Start the development server:
+```bash
+yarn dev
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+The application will be available at [http://localhost:3000](http://localhost:3000).
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## **API Integration with Redux Toolkit Query**
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### **Why Redux Toolkit Query (RTK Query)?**
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+The project uses **Redux Toolkit Query (RTK Query)** to manage API interactions. RTK Query simplifies API requests by:
+1. **Abstracting API Logic**: Automatically handling fetching, caching, and updating API data.
+2. **Centralized State Management**: Integrating API interactions directly into Redux for consistency across the app.
+3. **Code Reduction**: Eliminating the need for boilerplate code like `useEffect` and `axios` or `fetch` for API calls.
+
+
+#### **Advantages in This Project**
+- **Consistency**: All API calls (`GET`, `POST`, etc.) are handled through RTK Query, ensuring a consistent approach.
+- **Automatic Caching**: Data from API responses is cached and automatically updated.
+- **Error Handling**: Provides built-in mechanisms for handling API errors.
+
+---
+
+## **Separation of UI and State Logic**
+
+To keep the codebase clean and maintainable, the project utilizes **custom hooks** to separate UI components from state and business logic. This improves reusability and ensures components are focused on rendering, not managing data.
